@@ -1,0 +1,39 @@
+<!-- applications.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Applications</title>
+</head>
+<body>
+    <h1>Applications</h1>
+    <form method="GET" action="{% url 'show_applications' %}">
+        <input type="text" name="search" placeholder="Search by application name">
+        <button type="submit">Search</button>
+    </form>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Group Parent</th>
+                <th>Name</th>
+                <th>IP</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for app in applications %}
+            <tr>
+                <td>{{ app.id }}</td>
+                <td>{{ app.group_parent }}</td>
+                <td>{{ app.name_app }}</td>
+                <td>{{ app.ip_app }}</td>
+                <td>
+                    <a href="{% url 'update_application' app.id %}">Update</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

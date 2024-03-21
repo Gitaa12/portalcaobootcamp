@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+    <body>
+
+        <!-- your_template.html -->
+
+        <form method="post" action="{% url 'CheckNmbr' %}">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Submit</button>
+        </form>
+        
+        {% if query_result %}
+            <h3>Query Result:</h3>
+            <ul>
+                {% for item in query_result %}
+                    <li>{{ item.your_field }}</li>
+                    <!-- Display other fields as needed -->
+                {% endfor %}
+            </ul>
+        {% endif %}
+
+    
+    </body>
+    </html>

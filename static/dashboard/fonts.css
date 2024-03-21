@@ -1,0 +1,11 @@
+@font-face {
+    font-family: 'LeagueGothic';
+    src: url('{% static 'fonts/LeagueGothic-Regular.ttf' %}') format('ttf'),
+         url('{% static 'fonts/your-font.woff' %}') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+body {
+    font-family: 'LeagueGothic', sans-serif;
+}

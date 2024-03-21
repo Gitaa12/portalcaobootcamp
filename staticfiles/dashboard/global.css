@@ -1,0 +1,3 @@
+cp path/to/globals.css static/dashboard/
+cp path/to/style.css static/dashboard/
+cp -r path/to/img static/dashboard/

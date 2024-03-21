@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Kode Bank</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+
+<div class="container mt-5">
+    <h2>Data Kode Bank</h2>
+    <!-- Tabel untuk menampilkan data -->
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>BIC</th>
+                <th>Sandi Kliring</th>
+                <th>Nama Bank</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for kodebank in kodebanks %}
+            <tr>
+                <td>{{ kodebank.BIC }}</td>
+                <td>{{ kodebank.sandi_kliring }}</td>
+                <td>{{ kodebank.nama_bank }}</td>
+                <td>
+                    <!-- Tombol untuk memunculkan modal -->
+                    <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#updateModal{{ kodebank.id }}">
+                        Update
+                    </button>
+                </td>
+            </tr>
+            <!-- Modal untuk memperbarui data -->
+            <div class="modal fade" id="updateModal{{ kodebank.id }}" tabindex="-1" role="dialog" aria-labelledby="updateModalLabel{{ kodebank.id }}" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="updateModalLabel{{ kodebank.id }}">Update Data</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <!-- Formulir untuk memperbarui data -->
+                            <form id="updateForm{{ kodebank.id }}">
+                                <div class="form-group">
+                                    <label for="bic{{ kodebank.id }}">BIC:</label>
+                                    <input type="text" class="form-control" id="bic{{ kodebank.id }}" name="bic{{ kodebank.id }}" value="{{ kodebank.BIC }}">
+                                </div>
+                                <div class="form-group">
+                                    <label for="sandi_kliring{{ kodebank.id }}">Sandi Kliring:</label>
+                                    <input type="text" class="form-control" id="sandi_kliring{{ kodebank.id }}" name="sandi_kliring{{ kodebank.id }}" value="{{ kodebank.sandi_kliring }}">
+                                </div>
+                                <div class="form-group">
+                                    <label for="nama_bank{{ kodebank.id }}">Nama Bank:</label>
+                                    <input type="text" class="form-control" id="nama_bank{{ kodebank.id }}" name="nama_bank{{ kodebank.id }}" value="{{ kodebank.nama_bank }}">
+                                </div>
+                                <button type="submit" class="btn btn-primary" id="updateButton{{ kodebank.id }}">Update</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<!-- JavaScript untuk meng-handle update data -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+        // Tangani submit formulir update
+        {% for kodebank in kodebanks %}
+        $('#updateForm{{ kodebank.id }}').submit(function(event) {
+            event.preventDefault(); // Hindari perilaku bawaan formulir
+            var formData = $(this).serialize(); // Ambil data formulir
+            var updateButton = $('#updateButton{{ kodebank.id }}');
+            updateButton.prop('disabled', true); // Matikan tombol update
+            // Lakukan permintaan AJAX untuk update data
+            $.ajax({
+                type: 'POST',
+                url: '/update-data/{{ kodebank.id }}/', // Ganti dengan URL endpoint yang sesuai
+                data: formData,
+                success: function(response) {
+                    // Sukses, tampilkan pesan sukses
+                    updateButton.prop('disabled', false); // Aktifkan kembali tombol update
+                    $('#updateModal{{ kodebank.id }}').modal('hide'); // Sembunyikan modal
+                    alert('Data berhasil diperbarui');
+                    // Refresh halaman untuk memuat data baru
+                    location.reload();
+                },
+                error: function(xhr, errmsg, err) {
+                    // Kesalahan, tampilkan pesan kesalahan
+                    updateButton.prop('disabled', false); // Aktifkan kembali tombol update
+                    alert('Terjadi kesalahan. Silakan coba lagi.');
+                }
+            });
+        });
+        {% endfor %}
+    });
+</script>
+
+</body>
+</html>
