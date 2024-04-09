@@ -1,0 +1,45 @@
+<!-- update_kodebank.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Kode Bank</title>
+</head>
+<body>
+    <h1>Update Kode Bank</h1>
+    <form id="updateForm" data-id="{{ kodebank.id }}">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Update</button>
+    </form>
+
+    <!-- Script untuk menangani permintaan pembaruan data menggunakan AJAX -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#updateForm').submit(function(event) {
+                event.preventDefault(); // Hindari perilaku bawaan formulir
+                var form = $(this);
+                var formData = form.serialize(); // Ambil data formulir
+                var url = form.attr('action'); // Ambil URL dari atribut action formulir
+                $.ajax({
+                    type: 'POST',
+                    url: url,
+                    data: formData,
+                    success: function(response) {
+                        console.log(response); // Tampilkan respons dari server di konsol
+                        alert('Data berhasil diperbarui'); // Tampilkan pesan sukses
+                        // Tambahkan logika untuk memperbarui tampilan jika diperlukan
+                    },
+                    error: function(xhr, errmsg, err) {
+                        console.log(xhr.status + ": " + xhr.responseText); // Tampilkan pesan kesalahan di konsol
+                        alert('Terjadi kesalahan saat memperbarui data'); // Tampilkan pesan kesalahan
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

@@ -112,7 +112,7 @@ def update_kodebank(request, pk):
 from .models import CleansingBank
 from django.http import JsonResponse
 from .forms import CleansingBankForm
-
+#updateanggitia
 def update_cleansingbank(request, pk):
     kodebank = get_object_or_404(CleansingBank, pk=pk)
     form = CleansingBankForm(request.POST or None, instance=kodebank)
@@ -138,4 +138,3 @@ def update_returbank(request, pk):
         else:
             return JsonResponse({'error': form.errors}, status=400)
     return render(request, 'update_returbank.html', {'form': form})
-# Done Tama

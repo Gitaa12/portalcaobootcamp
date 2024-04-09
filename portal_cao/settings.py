@@ -109,19 +109,26 @@ WSGI_APPLICATION = 'portal_cao.wsgi.application'
 #}
 
 DATABASES = {
-    "default": {},
-    "users": {
-        "NAME": "portal_cao",
-        "ENGINE": "django.db.backends.mysql",
-        "USER": "root",
-        "PASSWORD": "112233",
+    "default": {
+        "NAME": "BRIICSS",
+        "ENGINE": "django.db.backends.sqlite3",
+        "USER": "ANGGITIA",
+        "PASSWORD": "",
+        "PORT":"1433",
+        
     },
-    "BRIVA": {
-        "NAME": "data_cleansing",
-        "ENGINE": "django.db.backends.mysql",
-        "USER": "root",
-        "PASSWORD": "112233",
-    },
+    # "users": {
+    #     "NAME": "portal_cao",
+    #     "ENGINE": "django.db.backends.mysql",
+    #     "USER": "root",
+    #     "PASSWORD": "112233",
+    # },
+    # "BRIVA": {
+    #     "NAME": "data_cleansing",
+    #     "ENGINE": "django.db.backends.mysql",
+    #     "USER": "root",
+    #     "PASSWORD": "112233",
+    # },
 }
 
 AUTH_PASSWORD_VALIDATORS = [
