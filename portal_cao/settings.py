@@ -16,7 +16,6 @@ import os
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
@@ -27,9 +26,6 @@ SECRET_KEY = 'django-insecure-=(oh_r!=o)f0b2zs!mmg!@n^pvu^z1n!zus!3&v_u!m#xj7-ca
 DEBUG = True
 
 ALLOWED_HOSTS = ['172.18.66.164','127.0.0.1']
-
-
-# Application definition
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -73,7 +69,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'portal_cao.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
@@ -84,31 +79,50 @@ WSGI_APPLICATION = 'portal_cao.wsgi.application'
 #     }
 # }
 
+#DATABASES = {
+#    'default': {
+#        'ENGINE': 'mssql',
+#        'NAME': 'RSS2',
+#        'USER': 'cao',
+#        'PASSWORD': 'P@ssw0rd',
+#        'HOST':'172.18.40.172', 
+#        'PORT':'1433',
+#        'OPTION': {
+#            'driver': 'ODBC Driver 17 for SQL Server',
+#            }
+#    }
+#}
+
+#KATANYA VERSION DJANGO GA SUPPORT
+#DATABASES = {
+#    'default': {
+#        'ENGINE': 'sql_server.pyodbc',
+#        'NAME': 'RSS2',
+#        'HOST': '172.18.40.172',
+#        'USER': 'cao',
+#        'PASSWORD': 'P@ssw0rd',
+#        'PORT': '1433',
+#        'OPTIONS': {
+#            'driver': 'FreeTDS',
+#                   }
+#    },
+#}
+
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'portalcao',
-        'USER': 'root',
-        'PASSWORD': '',
-        'HOST':'localhost',
-        'PORT':'3306',
-    }
+    "default": {},
+    "users": {
+        "NAME": "portal_cao",
+        "ENGINE": "django.db.backends.mysql",
+        "USER": "root",
+        "PASSWORD": "112233",
+    },
+    "BRIVA": {
+        "NAME": "data_cleansing",
+        "ENGINE": "django.db.backends.mysql",
+        "USER": "root",
+        "PASSWORD": "112233",
+    },
 }
-
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.mysql',
-#         'NAME': 'portalcao',
-#         'USER': 'grafana',
-#         'PASSWORD': 'P@ssw0rd',
-#         'HOST':'172.18.66.165',
-#         'PORT':'3306',
-#     }
-# }
-
-
-# Password validation
-# https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -125,10 +139,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
-# Internationalization
-# https://docs.djangoproject.com/en/4.2/topics/i18n/
-
 LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'UTC'
@@ -137,26 +147,15 @@ USE_I18N = True
 
 USE_TZ = True
 
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/4.2/howto/static-files/
-
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
-
-# Default primary key field type
-# https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
-
 
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# MEDIA
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
-# Authentication (tambahan rainal)
+
 LOGIN_REDIRECT_URL = '/success/'  # Change this to your desired redirect URL after login
 LOGOUT_REDIRECT_URL = '/login/'  # Change this to your desired redirect URL after logout
-
-#AUTH_USER_MODEL = 'dashboard.CAO1'

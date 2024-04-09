@@ -10,8 +10,8 @@ from .forms import formsCheckNumber
 # Tama
 from django.shortcuts import render, redirect,  get_object_or_404
 from .forms import ApplicationForm
-from .models import Application, KodeBankDummy
-# Tama
+from .models import Application, KodeBankDummy, CleansingBank, ReturBankLain
+
 
 def dashboard(request):
     items = DashboardItem.objects.all()
@@ -21,7 +21,7 @@ def sandbox_page(request):
     return render(request, 'sandbox.html')
 
 # def changekodebank_page(request):
-#     return render(request, 'changekodebank.html')
+#    return render(request, 'changekodebank.html')
 
 def spbi_page(request):
     return render(request, 'SPBI/main-spbi.html')
@@ -108,4 +108,34 @@ def update_kodebank(request, pk):
         else:
             return JsonResponse({'error': form.errors}, status=400)
     return render(request, 'update_kodebank.html', {'form': form})
+
+from .models import CleansingBank
+from django.http import JsonResponse
+from .forms import CleansingBankForm
+
+def update_cleansingbank(request, pk):
+    kodebank = get_object_or_404(CleansingBank, pk=pk)
+    form = CleansingBankForm(request.POST or None, instance=kodebank)
+    if request.method == 'POST':
+        if form.is_valid():
+            form.save()
+            return JsonResponse({'success': True})
+        else:
+            return JsonResponse({'error': form.errors}, status=400)
+    return render(request, 'update_cleansingbank.html', {'form': form})
+
+from .models import ReturBankLain
+from django.http import JsonResponse
+from .forms import ReturBankLainForm
+
+def update_returbank(request, pk):
+    kodebank = get_object_or_404(ReturBankLain, pk=pk)
+    form = ReturBankLainForm(request.POST or None, instance=kodebank)
+    if request.method == 'POST':
+        if form.is_valid():
+            form.save()
+            return JsonResponse({'success': True})
+        else:
+            return JsonResponse({'error': form.errors}, status=400)
+    return render(request, 'update_returbank.html', {'form': form})
 # Done Tama

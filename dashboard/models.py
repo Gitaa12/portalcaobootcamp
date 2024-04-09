@@ -79,3 +79,29 @@ class CustomUser(AbstractBaseUser):
     def __str__(self):
         return self.pn
 # Done Tama
+
+#DB CLEANSING
+class CleansingBank (models.Model):
+    trx_type  = models.CharField(max_length=50, null=True)
+    mnt_status  = models.CharField(max_length=50, null=True)
+    isprocess  = models.CharField(max_length=50, null=True)
+    isgenerate  = models.CharField(max_length=50, null=True)
+    ischange  = models.CharField(max_length=50, null=True)
+    insert_date = models.DateTimeField(null=True)
+    
+    class Meta:
+        db_table = 'INWARDCNNDG'
+
+#DB RETUR
+class ReturBankLain (models.Model):
+    bp_source_system = models.CharField(max_length=50, null=True)
+    enterprise_id = models.CharField(max_length=50, null=True)
+    customer_number = models.CharField(max_length=50, null=True)
+    status = models.CharField(max_length=50, null=True)
+    insert_date = models.DateTimeField(null=True)
+    
+    class Meta:
+        db_table = 'ICS_RETUR_BANK_LAIN'
+        db_table = 'ICS_RETUR_BANK_LAIN_ESB_LOG'
+        db_table = 'ICS_RETUR_BANK_LAIN_LOG'
+        db_table = 'UPDATE ICS_RETUR_BANK_LAIN SET STATUS_PROCESS'

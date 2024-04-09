@@ -9,7 +9,7 @@ class formsCheckNumber(forms.Form):
     number_field = forms.IntegerField()
 
 # Tama
-from .models import Application, KodeBankDummy
+from .models import Application, KodeBankDummy, CleansingBank, ReturBankLain 
 
 class ApplicationForm(forms.ModelForm):
     class Meta:
@@ -22,4 +22,13 @@ class KodeBankForm(forms.ModelForm):
         model = KodeBankDummy
         fields = ['sandi_kliring', 'nama_bank', 'BIC']  # Sesuaikan dengan field yang ingin Anda tampilkan dalam form
 
+class CleansingBankForm(forms.ModelForm):
+    class Meta:
+        model = CleansingBank
+        fields = ['sandi_kliring', 'nama_bank', 'BIC']  
+        
+class ReturBankLainForm(forms.ModelForm):
+    class Meta:
+        model = ReturBankLain
+        fields = ['sandi_kliring', 'nama_bank', 'BIC']  
 # Tama
