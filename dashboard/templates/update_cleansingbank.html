@@ -1,45 +1,367 @@
-<!-- update_kodebank.html -->
+{% load static %}
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Update Kode Bank</title>
-</head>
-<body>
-    <h1>Update Kode Bank</h1>
-    <form id="updateForm" data-id="{{ kodebank.id }}">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Update</button>
-    </form>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=League+Gothic&display=swap">
+    <link rel="stylesheet" type="text/css" href="{% static 'dashboard/style.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'dashboard/style.css' %}">
+    <link href="{% static 'dashboard/css/bootstrap.min.css' %}" rel="stylesheet">
+    <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous"> -->
 
-    <!-- Script untuk menangani permintaan pembaruan data menggunakan AJAX -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script>
-        $(document).ready(function() {
-            $('#updateForm').submit(function(event) {
-                event.preventDefault(); // Hindari perilaku bawaan formulir
-                var form = $(this);
-                var formData = form.serialize(); // Ambil data formulir
-                var url = form.attr('action'); // Ambil URL dari atribut action formulir
-                $.ajax({
-                    type: 'POST',
-                    url: url,
-                    data: formData,
-                    success: function(response) {
-                        console.log(response); // Tampilkan respons dari server di konsol
-                        alert('Data berhasil diperbarui'); // Tampilkan pesan sukses
-                        // Tambahkan logika untuk memperbarui tampilan jika diperlukan
-                    },
-                    error: function(xhr, errmsg, err) {
-                        console.log(xhr.status + ": " + xhr.responseText); // Tampilkan pesan kesalahan di konsol
-                        alert('Terjadi kesalahan saat memperbarui data'); // Tampilkan pesan kesalahan
-                    }
-                });
+    <!-- <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap" rel="stylesheet"> -->
+
+</head>
+
+<style>
+
+</style>
+
+<body style="background-color: #101418;">
+
+    <div id="container">
+        <div id="sidebar">
+            <div class="div-2" style="display: flex; flex-direction: column; block-size:100%; gap: 36px;">
+                <div class="logo_side">
+                    <svg width="200" height="69" viewBox="0 0 228 69" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M12.92 41.48C10.76 41.48 8.81333 40.9867 7.08 40C5.37333 38.9867 4.02667 37.6267 3.04 35.92C2.05333 34.1867 1.56 32.24 1.56 30.08C1.56 27.92 2.05333 25.9867 3.04 24.28C4.02667 22.5733 5.37333 21.2267 7.08 20.24C8.81333 19.2533 10.76 18.76 12.92 18.76C14.4667 18.76 15.9067 19.0267 17.24 19.56C18.5733 20.0933 19.72 20.8533 20.68 21.84C21.64 22.8 22.3467 23.92 22.8 25.2L18.2 27.2C17.7733 26.1067 17.0933 25.2267 16.16 24.56C15.2533 23.8933 14.1733 23.56 12.92 23.56C11.7733 23.56 10.7467 23.84 9.84 24.4C8.96 24.96 8.26667 25.7333 7.76 26.72C7.25333 27.7067 7 28.84 7 30.12C7 31.3733 7.25333 32.5067 7.76 33.52C8.26667 34.5067 8.96 35.28 9.84 35.84C10.7467 36.4 11.7733 36.68 12.92 36.68C14.1733 36.68 15.2533 36.36 16.16 35.72C17.0933 35.0533 17.7733 34.1467 18.2 33L22.8 35.08C22.3733 36.3067 21.68 37.4133 20.72 38.4C19.76 39.36 18.6133 40.12 17.28 40.68C15.9467 41.2133 14.4933 41.48 12.92 41.48ZM35.8159 41.48C33.6826 41.48 31.7359 40.9867 29.9759 40C28.2426 39.0133 26.8559 37.6667 25.8159 35.96C24.8026 34.2533 24.2959 32.3067 24.2959 30.12C24.2959 27.9333 24.8026 25.9867 25.8159 24.28C26.8559 22.5733 28.2426 21.2267 29.9759 20.24C31.7093 19.2533 33.6559 18.76 35.8159 18.76C37.9493 18.76 39.8826 19.2533 41.6159 20.24C43.3493 21.2267 44.7226 22.5733 45.7359 24.28C46.7759 25.9867 47.2959 27.9333 47.2959 30.12C47.2959 32.3067 46.7759 34.2667 45.7359 36C44.6959 37.7067 43.3093 39.0533 41.5759 40.04C39.8426 41 37.9226 41.48 35.8159 41.48ZM35.8159 36.68C36.9893 36.68 38.0159 36.4 38.8959 35.84C39.8026 35.28 40.5093 34.5067 41.0159 33.52C41.5493 32.5067 41.8159 31.3733 41.8159 30.12C41.8159 28.8667 41.5493 27.7467 41.0159 26.76C40.5093 25.7733 39.8026 25 38.8959 24.44C38.0159 23.8533 36.9893 23.56 35.8159 23.56C34.6426 23.56 33.5893 23.8533 32.6559 24.44C31.7493 25 31.0293 25.7733 30.4959 26.76C29.9893 27.7467 29.7359 28.8667 29.7359 30.12C29.7359 31.3733 29.9893 32.5067 30.4959 33.52C31.0293 34.5067 31.7493 35.28 32.6559 35.84C33.5893 36.4 34.6426 36.68 35.8159 36.68ZM49.6697 41V19.24H54.5897V22.32C55.1497 21.0667 55.9364 20.2 56.9497 19.72C57.963 19.24 59.1364 19 60.4697 19H61.7497V23.64H59.8697C58.403 23.64 57.203 24.1067 56.2697 25.04C55.363 25.9467 54.9097 27.2267 54.9097 28.88V41H49.6697ZM73.3506 41.48C71.1106 41.48 69.1506 40.9733 67.4706 39.96C65.7906 38.9467 64.484 37.5733 63.5506 35.84C62.6173 34.1067 62.1506 32.1867 62.1506 30.08C62.1506 27.8933 62.6173 25.96 63.5506 24.28C64.5106 22.5733 65.804 21.2267 67.4306 20.24C69.084 19.2533 70.924 18.76 72.9506 18.76C75.2173 18.76 77.1373 19.2533 78.7106 20.24C80.284 21.2 81.484 22.48 82.3106 24.08C83.1373 25.68 83.5506 27.4533 83.5506 29.4C83.5506 29.8 83.524 30.2 83.4706 30.6C83.444 30.9733 83.3773 31.3067 83.2706 31.6H67.5906C67.7506 33.2 68.364 34.48 69.4306 35.44C70.4973 36.4 71.8173 36.88 73.3906 36.88C74.5906 36.88 75.604 36.6267 76.4306 36.12C77.284 35.5867 77.9506 34.9067 78.4306 34.08L82.6706 36.16C82.004 37.7067 80.8306 38.9867 79.1506 40C77.4973 40.9867 75.564 41.48 73.3506 41.48ZM72.9506 23.08C71.644 23.08 70.5106 23.48 69.5506 24.28C68.6173 25.0533 68.004 26.16 67.7106 27.6H77.9506C77.844 26.2667 77.324 25.1867 76.3906 24.36C75.484 23.5067 74.3373 23.08 72.9506 23.08Z"
+                            fill="url(#paint0_linear_1061_171)" />
+                        <path
+                            d="M85.9228 49V19.24H90.8428V21.8C91.6161 20.84 92.6028 20.0933 93.8028 19.56C95.0028 19.0267 96.3495 18.76 97.8428 18.76C99.9228 18.76 101.789 19.2667 103.443 20.28C105.096 21.2667 106.403 22.6267 107.363 24.36C108.323 26.0667 108.803 27.9867 108.803 30.12C108.803 32.2533 108.323 34.1867 107.363 35.92C106.403 37.6267 105.096 38.9867 103.443 40C101.789 40.9867 99.9095 41.48 97.8028 41.48C96.4695 41.48 95.2295 41.2667 94.0828 40.84C92.9361 40.3867 91.9628 39.7467 91.1628 38.92V49H85.9228ZM97.2028 36.68C98.4028 36.68 99.4561 36.4 100.363 35.84C101.296 35.28 102.029 34.5067 102.563 33.52C103.096 32.5067 103.363 31.3733 103.363 30.12C103.363 28.8667 103.096 27.7467 102.563 26.76C102.029 25.7733 101.296 25 100.363 24.44C99.4561 23.8533 98.4028 23.56 97.2028 23.56C96.0561 23.56 95.0161 23.84 94.0828 24.4C93.1761 24.96 92.4561 25.7333 91.9228 26.72C91.4161 27.7067 91.1628 28.84 91.1628 30.12C91.1628 31.4 91.4161 32.5333 91.9228 33.52C92.4561 34.5067 93.1761 35.28 94.0828 35.84C95.0161 36.4 96.0561 36.68 97.2028 36.68ZM121.838 41.48C119.704 41.48 117.758 40.9867 115.998 40C114.264 39.0133 112.878 37.6667 111.838 35.96C110.824 34.2533 110.318 32.3067 110.318 30.12C110.318 27.9333 110.824 25.9867 111.838 24.28C112.878 22.5733 114.264 21.2267 115.998 20.24C117.731 19.2533 119.678 18.76 121.838 18.76C123.971 18.76 125.904 19.2533 127.638 20.24C129.371 21.2267 130.744 22.5733 131.758 24.28C132.798 25.9867 133.318 27.9333 133.318 30.12C133.318 32.3067 132.798 34.2667 131.758 36C130.718 37.7067 129.331 39.0533 127.598 40.04C125.864 41 123.944 41.48 121.838 41.48ZM121.838 36.68C123.011 36.68 124.038 36.4 124.918 35.84C125.824 35.28 126.531 34.5067 127.038 33.52C127.571 32.5067 127.838 31.3733 127.838 30.12C127.838 28.8667 127.571 27.7467 127.038 26.76C126.531 25.7733 125.824 25 124.918 24.44C124.038 23.8533 123.011 23.56 121.838 23.56C120.664 23.56 119.611 23.8533 118.678 24.44C117.771 25 117.051 25.7733 116.518 26.76C116.011 27.7467 115.758 28.8667 115.758 30.12C115.758 31.3733 116.011 32.5067 116.518 33.52C117.051 34.5067 117.771 35.28 118.678 35.84C119.611 36.4 120.664 36.68 121.838 36.68ZM135.692 41V19.24H140.612V22.32C141.172 21.0667 141.958 20.2 142.972 19.72C143.985 19.24 145.158 19 146.492 19H147.772V23.64H145.892C144.425 23.64 143.225 24.1067 142.292 25.04C141.385 25.9467 140.932 27.2267 140.932 28.88V41H135.692ZM159.558 41.24C157.105 41.24 155.198 40.56 153.838 39.2C152.505 37.84 151.838 35.9467 151.838 33.52V23.92H148.078V19.24H148.478C149.545 19.24 150.372 18.96 150.958 18.4C151.545 17.84 151.838 17.0267 151.838 15.96V14.28H157.078V19.24H162.078V23.92H157.078V33.24C157.078 34.3333 157.372 35.1733 157.958 35.76C158.545 36.3467 159.478 36.64 160.758 36.64C161.185 36.64 161.652 36.6 162.158 36.52V41C161.785 41.0533 161.358 41.1067 160.878 41.16C160.398 41.2133 159.958 41.24 159.558 41.24ZM171.045 41.48C168.778 41.48 166.965 40.92 165.605 39.8C164.245 38.68 163.565 37.16 163.565 35.24C163.565 33.4267 164.178 31.92 165.405 30.72C166.631 29.52 168.525 28.7067 171.085 28.28L177.565 27.24V26.52C177.565 25.5867 177.191 24.8133 176.445 24.2C175.725 23.56 174.765 23.24 173.565 23.24C172.418 23.24 171.418 23.5467 170.565 24.16C169.711 24.7467 169.085 25.5333 168.685 26.52L164.405 24.44C165.045 22.7333 166.218 21.36 167.925 20.32C169.631 19.28 171.578 18.76 173.765 18.76C175.551 18.76 177.111 19.0933 178.445 19.76C179.805 20.4 180.871 21.3067 181.645 22.48C182.418 23.6533 182.805 25 182.805 26.52V41H177.845V38.68C176.138 40.5467 173.871 41.48 171.045 41.48ZM169.005 35.04C169.005 35.7867 169.285 36.3867 169.845 36.84C170.405 37.2667 171.125 37.48 172.005 37.48C173.658 37.48 174.991 36.96 176.005 35.92C177.045 34.88 177.565 33.6133 177.565 32.12V31.24L172.085 32.16C170.031 32.56 169.005 33.52 169.005 35.04ZM186.048 41V10.72H191.288V41H186.048ZM197.006 41V35.4H202.286V41H197.006Z"
+                            fill="white" />
+                        <path
+                            d="M7.1 64.24C6.35333 64.24 5.66 64.1 5.02 63.82C4.39333 63.54 3.88 63.14 3.48 62.62V64H1.32V48.86H3.58V54.42C3.98 53.9533 4.48 53.5933 5.08 53.34C5.68 53.0733 6.35333 52.94 7.1 52.94C8.12667 52.94 9.04667 53.1867 9.86 53.68C10.6867 54.1733 11.3333 54.8467 11.8 55.7C12.28 56.5533 12.52 57.5133 12.52 58.58C12.52 59.6467 12.28 60.6067 11.8 61.46C11.3333 62.3133 10.6933 62.9933 9.88 63.5C9.06667 63.9933 8.14 64.24 7.1 64.24ZM6.88 62.14C7.52 62.14 8.08667 61.9867 8.58 61.68C9.07333 61.3733 9.46 60.9533 9.74 60.42C10.0333 59.8733 10.18 59.26 10.18 58.58C10.18 57.9 10.0333 57.2933 9.74 56.76C9.46 56.2267 9.07333 55.8067 8.58 55.5C8.08667 55.1933 7.52 55.04 6.88 55.04C6.25333 55.04 5.68667 55.1933 5.18 55.5C4.68667 55.8067 4.29333 56.2267 4 56.76C3.72 57.2933 3.58 57.9 3.58 58.58C3.58 59.26 3.72 59.8733 4 60.42C4.29333 60.9533 4.68667 61.3733 5.18 61.68C5.68667 61.9867 6.25333 62.14 6.88 62.14ZM14.6831 68.42C14.4298 68.42 14.1698 68.3933 13.9031 68.34C13.6498 68.3 13.4098 68.2333 13.1831 68.14V66.2C13.3431 66.24 13.5365 66.2733 13.7631 66.3C13.9898 66.34 14.2098 66.36 14.4231 66.36C15.0498 66.36 15.5098 66.22 15.8031 65.94C16.1098 65.6733 16.3831 65.2533 16.6231 64.68L16.9231 64L12.6231 53.18H15.0431L18.0831 61.12L21.1231 53.18H23.5631L18.7831 65.18C18.3965 66.1533 17.8698 66.9333 17.2031 67.52C16.5498 68.12 15.7098 68.42 14.6831 68.42ZM34.1659 64.24C33.1126 64.24 32.1326 64.0533 31.2259 63.68C30.3326 63.2933 29.5526 62.7533 28.8859 62.06C28.2193 61.3667 27.6993 60.5533 27.3259 59.62C26.9659 58.6733 26.7859 57.6467 26.7859 56.54C26.7859 55.4333 26.9659 54.4133 27.3259 53.48C27.6993 52.5333 28.2126 51.72 28.8659 51.04C29.5326 50.3467 30.3126 49.8133 31.2059 49.44C32.1126 49.0533 33.0993 48.86 34.1659 48.86C35.2059 48.86 36.1459 49.04 36.9859 49.4C37.8259 49.76 38.5326 50.2333 39.1059 50.82C39.6793 51.3933 40.0926 52.02 40.3459 52.7L38.2259 53.7C37.9059 52.9 37.3926 52.2533 36.6859 51.76C35.9926 51.2533 35.1526 51 34.1659 51C33.1793 51 32.3059 51.2333 31.5459 51.7C30.7993 52.1667 30.2126 52.8133 29.7859 53.64C29.3593 54.4667 29.1459 55.4333 29.1459 56.54C29.1459 57.6467 29.3593 58.62 29.7859 59.46C30.2126 60.2867 30.7993 60.9333 31.5459 61.4C32.3059 61.8533 33.1793 62.08 34.1659 62.08C35.1526 62.08 35.9926 61.8333 36.6859 61.34C37.3926 60.8467 37.9059 60.2 38.2259 59.4L40.3459 60.4C40.0926 61.0667 39.6793 61.6933 39.1059 62.28C38.5326 62.8667 37.8259 63.34 36.9859 63.7C36.1459 64.06 35.2059 64.24 34.1659 64.24ZM40.6528 64L45.8928 49.1H48.8128L54.0528 64H51.5328L50.3928 60.66H44.3328L43.1728 64H40.6528ZM45.0128 58.56H49.6728L47.3528 51.72L45.0128 58.56ZM61.655 64.24C60.575 64.24 59.5683 64.0533 58.635 63.68C57.7017 63.2933 56.8883 62.7533 56.195 62.06C55.5017 61.3667 54.955 60.5533 54.555 59.62C54.1683 58.6733 53.975 57.6467 53.975 56.54C53.975 55.4333 54.1683 54.4133 54.555 53.48C54.955 52.5333 55.5017 51.72 56.195 51.04C56.8883 50.3467 57.7017 49.8133 58.635 49.44C59.5683 49.0533 60.575 48.86 61.655 48.86C62.735 48.86 63.7417 49.0533 64.675 49.44C65.6083 49.8133 66.4217 50.3467 67.115 51.04C67.8217 51.7333 68.3683 52.5467 68.755 53.48C69.1417 54.4133 69.335 55.4333 69.335 56.54C69.335 57.6467 69.135 58.6667 68.735 59.6C68.3483 60.5333 67.8083 61.3467 67.115 62.04C66.4217 62.7333 65.6083 63.2733 64.675 63.66C63.7417 64.0467 62.735 64.24 61.655 64.24ZM61.655 62.08C62.6817 62.08 63.595 61.84 64.395 61.36C65.2083 60.8667 65.8417 60.2 66.295 59.36C66.7617 58.52 66.995 57.58 66.995 56.54C66.995 55.4867 66.7617 54.5467 66.295 53.72C65.8417 52.88 65.215 52.22 64.415 51.74C63.615 51.2467 62.695 51 61.655 51C60.6283 51 59.715 51.2467 58.915 51.74C58.115 52.22 57.4817 52.88 57.015 53.72C56.5617 54.5467 56.335 55.4867 56.335 56.54C56.335 57.58 56.5617 58.52 57.015 59.36C57.4817 60.2 58.115 60.8667 58.915 61.36C59.715 61.84 60.6283 62.08 61.655 62.08Z"
+                            fill="#A8A8A8" />
+                        <defs>
+                            <linearGradient id="paint0_linear_1061_171" x1="92" y1="8.4489" x2="2.60758" y2="60.9785"
+                                gradientUnits="userSpaceOnUse">
+                                <stop stop-color="#A575D9" />
+                                <stop offset="0.430319" stop-color="#81B5D0" />
+                                <stop offset="1" stop-color="#89CAC3" />
+                            </linearGradient>
+                        </defs>
+                    </svg>
+                </div>
+                <div class="menu-side">
+                    <div class="menu-idle">Home</div>
+                    <!-- <div class="menu-idle">BRINETS</div> -->
+                    <a href="/" class="menu-selected">SPBI</a>
+                    <a href="/" class="menu-idle">Credit Card</a>
+                    <a href="/" class="menu-idle">Other</a>
+                </div>
+                <div class="btn-group dropup">
+                    <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown"
+                        aria-expanded="false" style="background-color: #101418 !important;  padding: 12px;
+                        border-radius: 16px; border: none;">
+                        Robertus Rotama
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-dark">
+                        <li><a class="dropdown-item" href="#">Profile</a></li>
+                        <li><a class="dropdown-item" href="#">Setting</a></li>
+                        <li><a class="dropdown-item" href="#">Log Out</a></li>
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+
+        <div id="content-side">
+
+            <div id="head-content-detail">
+
+                <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='%236c757d'/%3E%3C/svg%3E&#34;);"
+                    aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="#" style="text-decoration: none; color: white;">Home</a>
+                        </li>
+                        <li class="breadcrumb-item"><a href="#" style="text-decoration: none; color: white;">SPBI</a>
+                        </li>
+                        <li class="breadcrumb-item active" style="text-decoration: none; color: #959595;"
+                            aria-current="page">Perubahan kode bank RTGS RSS dan SKN</li>
+                    </ol>
+                </nav>
+
+                <div class="content-title">
+                    Perubahan kode bank RTGS RSS dan SKN
+                    <button type="button" class="info-button" data-bs-toggle="modal" data-bs-target="#infomodal">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd" clip-rule="evenodd"
+                                d="M12 1C5.925 1 1 5.925 1 12C1 18.075 5.925 23 12 23C18.075 23 23 18.075 23 12C23 5.925 18.075 1 12 1ZM11.5 6C11.2348 6 10.9804 6.10536 10.7929 6.29289C10.6054 6.48043 10.5 6.73478 10.5 7C10.5 7.26522 10.6054 7.51957 10.7929 7.70711C10.9804 7.89464 11.2348 8 11.5 8H12C12.2652 8 12.5196 7.89464 12.7071 7.70711C12.8946 7.51957 13 7.26522 13 7C13 6.73478 12.8946 6.48043 12.7071 6.29289C12.5196 6.10536 12.2652 6 12 6H11.5ZM10 10C9.73478 10 9.48043 10.1054 9.29289 10.2929C9.10536 10.4804 9 10.7348 9 11C9 11.2652 9.10536 11.5196 9.29289 11.7071C9.48043 11.8946 9.73478 12 10 12H11V15H10C9.73478 15 9.48043 15.1054 9.29289 15.2929C9.10536 15.4804 9 15.7348 9 16C9 16.2652 9.10536 16.5196 9.29289 16.7071C9.48043 16.8946 9.73478 17 10 17H14C14.2652 17 14.5196 16.8946 14.7071 16.7071C14.8946 16.5196 15 16.2652 15 16C15 15.7348 14.8946 15.4804 14.7071 15.2929C14.5196 15.1054 14.2652 15 14 15H13V11C13 10.7348 12.8946 10.4804 12.7071 10.2929C12.5196 10.1054 12.2652 10 12 10H10Z"
+                                fill="white" />
+                        </svg>
+
+                    </button>
+
+                </div>
+                <div class="content-desc" style="color: white; font-size: 18px; word-wrap: break-word">
+                    Perubahan kode bank RTGS dilakukan saat apa .........
+                </div>
+
+                <!-- Modal -->
+                <div class="modal fade" id="infomodal" tabindex="-1" aria-labelledby="infomodalLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5" id="exampleModalLabel">Info Lainnya</h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="container-pills">
+                                    <div class="app-pills">
+                                        Server: 172.18.141.250
+                                    </div>
+                                    <div class="app-pills">
+                                        Last Updated: 11 November 2024
+                                    </div>
+                                    <div class="app-pills">
+                                        Link Lain: Qluepedia
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="row-content">
+                <div class="content-section">
+                    <h6>Cari Kode Bank</h6>
+                    <div class="search-container">
+                        <form method="GET" action="{% url 'changekodebank_page' %}">
+                            <input class="search-input"
+                                style="color: white; font-size: 14px; font-weight: 600; word-wrap: break-word; background-color: transparent;"
+                                type="text" name="search" placeholder="Masukkan Kode Bank" class="search-input">
+                    </div>
+                    <div style="flex: 2;">
+                    </div>
+                    <button type="submit" class="primary-button">Search</button>
+                    <button class="secondary-button">Top 10 Data</button>
+                    </form>
+                </div>
+                <table class="rounded-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Sandi Kliring</th>
+                            <th>Nama Bank</th>
+                            <th>BIC</th>
+                            <th>Kode Wilayah</th>
+                            <th>Nama Wilayah</th>
+                            <th>Status</th>
+                            <th>Timestamp</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for kodebank in kodebank_list %}
+                        <tr>
+                            <td>{{ kodebank.id }}</td>
+                            <td>{{ kodebank.sandi_kliring }}</td>
+                            <td>{{ kodebank.nama_bank }}</td>
+                            <td>{{ kodebank.BIC }}</td>
+                            <td>{{ kodebank.kode_wilayah }}</td>
+                            <td>{{ kodebank.nama_wilayah }}</td>
+                            <td>{% if kodebank.status %}Aktif{% else %}Nonaktif{% endif %}</td>
+                            <td>{{ kodebank.timestamp }}</td>
+                            <td>
+                                <!-- <button type="button" class="edit-button" data-bs-toggle="modal"
+                                    data-bs-target="#modal{{ kodebank.id }}">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <path
+                                            d="M16.475 5.40783L18.592 7.52483M17.836 3.54283L12.109 9.26983C11.8131 9.56533 11.6113 9.94181 11.529 10.3518L11 12.9998L13.648 12.4698C14.058 12.3878 14.434 12.1868 14.73 11.8908L20.457 6.16383C20.6291 5.99173 20.7656 5.78742 20.8588 5.56256C20.9519 5.33771 20.9998 5.09671 20.9998 4.85333C20.9998 4.60994 20.9519 4.36895 20.8588 4.14409C20.7656 3.91923 20.6291 3.71492 20.457 3.54283C20.2849 3.37073 20.0806 3.23421 19.8557 3.14108C19.6309 3.04794 19.3899 3 19.1465 3C18.9031 3 18.6621 3.04794 18.4373 3.14108C18.2124 3.23421 18.0081 3.37073 17.836 3.54283Z"
+                                            stroke="#76B1DA" stroke-width="2" stroke-linecap="round"
+                                            stroke-linejoin="round" />
+                                        <path
+                                            d="M19 15V18C19 18.5304 18.7893 19.0391 18.4142 19.4142C18.0391 19.7893 17.5304 20 17 20H6C5.46957 20 4.96086 19.7893 4.58579 19.4142C4.21071 19.0391 4 18.5304 4 18V7C4 6.46957 4.21071 5.96086 4.58579 5.58579C4.96086 5.21071 5.46957 5 6 5H9"
+                                            stroke="#76B1DA" stroke-width="2" stroke-linecap="round"
+                                            stroke-linejoin="round" />
+                                    </svg>
+                                </button> -->
+                                <a class="edit-button" href="{% url 'update_kodebank' pk=kodebank.id %}"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path
+                                        d="M16.475 5.40783L18.592 7.52483M17.836 3.54283L12.109 9.26983C11.8131 9.56533 11.6113 9.94181 11.529 10.3518L11 12.9998L13.648 12.4698C14.058 12.3878 14.434 12.1868 14.73 11.8908L20.457 6.16383C20.6291 5.99173 20.7656 5.78742 20.8588 5.56256C20.9519 5.33771 20.9998 5.09671 20.9998 4.85333C20.9998 4.60994 20.9519 4.36895 20.8588 4.14409C20.7656 3.91923 20.6291 3.71492 20.457 3.54283C20.2849 3.37073 20.0806 3.23421 19.8557 3.14108C19.6309 3.04794 19.3899 3 19.1465 3C18.9031 3 18.6621 3.04794 18.4373 3.14108C18.2124 3.23421 18.0081 3.37073 17.836 3.54283Z"
+                                        stroke="#76B1DA" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round" />
+                                    <path
+                                        d="M19 15V18C19 18.5304 18.7893 19.0391 18.4142 19.4142C18.0391 19.7893 17.5304 20 17 20H6C5.46957 20 4.96086 19.7893 4.58579 19.4142C4.21071 19.0391 4 18.5304 4 18V7C4 6.46957 4.21071 5.96086 4.58579 5.58579C4.96086 5.21071 5.46957 5 6 5H9"
+                                        stroke="#76B1DA" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round" />
+                                </svg></a>
+                            </td>
+                        </tr>
+
+                        <div class="modal fade" id="modal{{ kodebank.id }}" data-bs-backdrop="static"
+                            data-bs-keyboard="false" tabindex="-1" aria-labelledby="modal{{ kodebank.id }}Label"
+                            aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="staticBackdropLabel">Patch Kode Bank
+                                        </h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body" style="gap: 16px;">
+                                        <div class="alert-warning alert alert-warning" role="alert">
+                                            <svg width="36" height="36" viewBox="0 0 36 36" fill="none"
+                                                xmlns="http://www.w3.org/2000/svg">
+                                                <g clip-path="url(#clip0_1048_334)">
+                                                    <path
+                                                        d="M18 21.3202C18.3448 21.3202 18.6754 21.1832 18.9192 20.9394C19.163 20.6956 19.3 20.365 19.3 20.0202V14.0002C19.3 13.6554 19.163 13.3248 18.9192 13.081C18.6754 12.8372 18.3448 12.7002 18 12.7002C17.6552 12.7002 17.3245 12.8372 17.0807 13.081C16.8369 13.3248 16.7 13.6554 16.7 14.0002V20.0002C16.6973 20.1726 16.729 20.3438 16.7931 20.5038C16.8573 20.6639 16.9526 20.8095 17.0736 20.9324C17.1946 21.0552 17.3388 21.1528 17.4978 21.2194C17.6569 21.2859 17.8276 21.3202 18 21.3202Z"
+                                                        fill="#E19F79" />
+                                                    <path
+                                                        d="M17.95 25.77C18.7784 25.77 19.45 25.0984 19.45 24.27C19.45 23.4416 18.7784 22.77 17.95 22.77C17.1215 22.77 16.45 23.4416 16.45 24.27C16.45 25.0984 17.1215 25.77 17.95 25.77Z"
+                                                        fill="#E19F79" />
+                                                    <path
+                                                        d="M30.3299 25.54L20.5899 7.60003C20.3321 7.12625 19.9512 6.73075 19.4875 6.45518C19.0238 6.17962 18.4944 6.03418 17.9549 6.03418C17.4155 6.03418 16.8861 6.17962 16.4224 6.45518C15.9587 6.73075 15.5778 7.12625 15.3199 7.60003L5.56995 25.54C5.31475 25.9981 5.18407 26.515 5.19093 27.0393C5.19779 27.5637 5.34195 28.077 5.60905 28.5282C5.87614 28.9795 6.25684 29.3528 6.71319 29.611C7.16954 29.8693 7.6856 30.0034 8.20994 30H27.6899C28.21 30.0005 28.7212 29.8658 29.1735 29.6091C29.6258 29.3524 30.0036 28.9825 30.2698 28.5358C30.536 28.0891 30.6815 27.5808 30.6921 27.0609C30.7026 26.5409 30.5778 26.0272 30.3299 25.57V25.54ZM28.5499 27.48C28.4614 27.6293 28.3356 27.753 28.1848 27.8389C28.034 27.9248 27.8635 27.97 27.6899 27.97H8.20994C8.03612 27.9705 7.86518 27.9257 7.71397 27.8399C7.56276 27.7542 7.43651 27.6305 7.34768 27.4811C7.25884 27.3317 7.21048 27.1617 7.20737 26.9879C7.20426 26.8141 7.24651 26.6425 7.32994 26.49L17.0699 8.55003C17.1556 8.39128 17.2827 8.25867 17.4376 8.16624C17.5925 8.07381 17.7695 8.02501 17.9499 8.02501C18.1303 8.02501 18.3074 8.07381 18.4623 8.16624C18.6172 8.25867 18.7443 8.39128 18.8299 8.55003L28.5699 26.49C28.6528 26.6426 28.6946 26.8141 28.6911 26.9877C28.6876 27.1613 28.6389 27.331 28.5499 27.48Z"
+                                                        fill="#E19F79" />
+                                                </g>
+                                                <defs>
+                                                    <clipPath id="clip0_1048_334">
+                                                        <rect width="36" height="36" fill="white" />
+                                                    </clipPath>
+                                                </defs>
+                                            </svg>
+                                            <h6 style="flex: 2;">Warning! Ini data transaksi. Pastikan data
+                                                sesuai dengan SOP jika ada hal yang
+                                                berbeda lakukan pengecekan lebih lanjut</h6>
+                                            <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                                aria-label="Close" style="color: white;"></button>
+                                        </div>
+
+                                        <form id="updateForm{{ kodebank.id }}" data-id="{{ kodebank.id }}">
+                                            {% csrf_token %}
+                                            {{ form.as_p }}
+                                            <div class="input-right">
+                                                <h6>Sandi Kliring</h6>
+                                                <div class="search-container">
+                                                    <input class="search-input"
+                                                        style="color: white; font-size: 14px; font-weight: 600; word-wrap: break-word; background-color: transparent;"
+                                                        type="text" placeholder="Input Update"
+                                                        value="{{ kodebank.sandi_kliring }}" name="sandi_kliring"> <!-- Tambahkan atribut "name" -->
+                                                </div>
+                                            </div>
+                                            <div class="input-right">
+                                                <h6>Nama Bank</h6>
+                                                <div class="search-container">
+                                                    <input class="search-input"
+                                                        style="color: white; font-size: 14px; font-weight: 600; word-wrap: break-word; background-color: transparent;"
+                                                        type="text" placeholder="Input Update"
+                                                        value="{{ kodebank.nama_bank }}" name="nama_bank"> <!-- Tambahkan atribut "name" -->
+                                                </div>
+                                            </div>
+                                            <div class="input-right">
+                                                <h6>BIC</h6>
+                                                <div class="search-container">
+                                                    <input class="search-input"
+                                                        style="color: white; font-size: 14px; font-weight: 600; word-wrap: break-word; background-color: transparent;"
+                                                        type="text" placeholder="Input Update"
+                                                        value="{{ kodebank.BIC }}" name="BIC"> <!-- Tambahkan atribut "name" -->
+                                                </div>
+                                            </div>
+                                            <!-- Tambahkan elemen-elemen input lainnya untuk kolom-kolom lainnya -->
+                                            <div class="modal-footer">
+                                                <button type="button" class="secondary-button"
+                                                    data-bs-dismiss="modal">Close</button>
+                                                <button type="submit" class="execute-button">
+                                                    PATCH DATA</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </tbody>
+
+
+                </table>
+
+                <!-- <div class="content-section">
+                    <p>02</p>
+                    <h5 style="flex: 2;">UPDATE Data</h5>
+                </div> -->
+                <!-- <button class="execute-button">PATCH DATA</button> -->
+
+
+            </div>
+        </div>
+
+    </div>
+
+</body>
+
+<!-- Tama -->
+<script>
+    // Tanggapi pengiriman formulir
+    $('form').submit(function (event) {
+        event.preventDefault(); // Mencegah pengiriman formulir default
+        var id = $(this).data('id'); // Ambil id data
+        var formData = $(this).serialize(); // Serialize formulir
+
+        // Kirim permintaan AJAX
+        $.ajax({
+            url: '/kodebank/' + id + '/update/',
+            type: 'POST',
+            data: formData,
+            success: function (response) {
+                // Tanggapi sukses, tutup modal atau lakukan tindakan lain yang sesuai
+                $('#modal' + id).modal('hide'); // Tutup modal setelah pembaruan berhasil
+            },
+            error: function (error) {
+                // Tanggapi kesalahan, tampilkan pesan kesalahan atau lakukan tindakan lain yang sesuai
+                console.log(error);
+            }
+        });
+    });
+</script>
+
+<script>
+    $(document).ready(function() {
+        // Tangani submit formulir dengan jQuery
+        $("#myForm").submit(function(event) {
+            event.preventDefault(); // Hindari perilaku bawaan formulir
+            var csrftoken = $("[name=csrfmiddlewaretoken]").val();
+            $.ajax({
+                url: "/your-endpoint/",
+                type: "POST",
+                headers: { "X-CSRFToken": csrftoken },
+                data: {
+                    // Data Anda
+                },
+                success: function(response) {
+                    // Penanganan respons
+                },
+                error: function(xhr, errmsg, err) {
+                    // Penanganan kesalahan
+                }
             });
         });
-    </script>
-</body>
+    });
+</script>
+
+<!-- Tama -->
+
+<script src="{% static 'dashboard/js/bootstrap.min.js' %}"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+    crossorigin="anonymous"></script>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+
+
+
 </html>
