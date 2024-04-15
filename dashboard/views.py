@@ -113,26 +113,26 @@ from .models import CleansingBank
 from django.http import JsonResponse
 from .forms import CleansingBankForm
 #updateanggitia
-# def update_cleansingbank(request, pk):
-#     kodebank = get_object_or_404(CleansingBank, pk=pk)
-#     form = CleansingBankForm(request.POST or None, instance=kodebank)
-#     if request.method == 'POST':
-#         if form.is_valid():
-#             form.save()
-#             return JsonResponse({'success': True})
-#         else:
-#             return JsonResponse({'error': form.errors}, status=400)
-#     return render(request, 'update_cleansingbank.html', {'form': form})
+def update_cleansingbank(request, pk):
+    kodebank = get_object_or_404(CleansingBank, pk=pk)
+    form = CleansingBankForm(request.POST or None, instance=kodebank)
+    if request.method == 'POST':
+        if form.is_valid():
+            form.save()
+            return JsonResponse({'success': True})
+        else:
+            return JsonResponse({'error': form.errors}, status=400)
+    return render(request, 'update_cleansingbank.html', {'form': form})
 
-def update_cleansingbank(request):
-    kodebank_list = KodeBankDummy.objects.all()
+# def update_cleansingbank(request):
+#     kodebank_list = KodeBankDummy.objects.all()
 
-    # Proses pencarian jika ada query search
-    search_query = request.GET.get('search')
-    if search_query:
-        kodebank_list = kodebank_list.filter(nama_bank__icontains=search_query)
+#     # Proses pencarian jika ada query search
+#     search_query = request.GET.get('search')
+#     if search_query:
+#         kodebank_list = kodebank_list.filter(nama_bank__icontains=search_query)
 
-    return render(request, 'update_cleansingbank.html', {'kodebank_list': kodebank_list})
+#     return render(request, 'update_cleansingbank.html', {'kodebank_list': kodebank_list})
 
 from .models import ReturBankLain
 from django.http import JsonResponse

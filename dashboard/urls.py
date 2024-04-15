@@ -1,7 +1,7 @@
 # dashboard/urls.py
 
 from django.urls import path
-from .views import dashboard, sandbox_page, changekodebank_page, spbi_page, querybox_page, show_applications,create_application, update_application, update_cleansingbank, update_returbank 
+from .views import dashboard, sandbox_page, changekodebank_page, spbi_page, querybox_page, show_applications,create_application, update_application, update_cleansingbank, update_returbank
 from .views import update_kodebank
 from .views import dashboard, login, CheckNmbr
 from django.contrib.auth.views import LoginView, LogoutView
