@@ -117,6 +117,14 @@ DATABASES = {
         "PORT":"1433",
         
     },
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.sqlite3',
+    #     'NAME': 'BRIICSS',
+    #     'USER': 'LAPTOP-A1BP8DFL/sidiq',
+    #     'PASSWORD': '',
+    #     'HOST':'localhost',
+    #     'PORT':'1433',
+    # }
     # "users": {
     #     "NAME": "portal_cao",
     #     "ENGINE": "django.db.backends.mysql",
