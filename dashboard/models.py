@@ -102,6 +102,6 @@ class ReturBankLain (models.Model):
     
     class Meta:
         db_table = 'ICS_RETUR_BANK_LAIN'
-        db_table = 'ICS_RETUR_BANK_LAIN_ESB_LOG'
-        db_table = 'ICS_RETUR_BANK_LAIN_LOG'
-        db_table = 'UPDATE ICS_RETUR_BANK_LAIN SET STATUS_PROCESS'
+        # db_table = 'ICS_RETUR_BANK_LAIN_ESB_LOG'
+        # db_table = 'ICS_RETUR_BANK_LAIN_LOG'
+        # db_table = 'UPDATE ICS_RETUR_BANK_LAIN SET STATUS_PROCESS'
